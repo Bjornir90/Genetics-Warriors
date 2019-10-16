@@ -9,7 +9,7 @@ import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.miniscript.core.GameFuture;
 
 public abstract class Fighter {
-    protected double mov_speed;
+    protected double mov_speed, move_second_speed;
     protected double secondPerAttack;
     protected int damage;
     protected int health, initial_health;
@@ -21,10 +21,13 @@ public abstract class Fighter {
     protected CollisionPoint position;
     protected Fighter opponent;
     protected long timeSinceLastAttack;
+    protected float secondSinceLastAttack;
 
     public Fighter(){
         position = new CollisionPoint();
         timeSinceLastAttack = 0;
+        secondSinceLastAttack = 0.0f;
+        move_second_speed = 100.0f;
     }
 
     public Fighter(String spritePath) {
@@ -37,11 +40,36 @@ public abstract class Fighter {
 
         position.preUpdate();
 
-        if(timeSinceLastAttack >= secondPerAttack) {
+        float movementX = opponent.getPosition().getX()-position.getX(), movementY = opponent.getPosition().getY()-position.getY();
+        float normalizedMovementX = movementX/(float)mov_speed, normalizedMovementY = movementY/(float)mov_speed;
+
+        moveBy(normalizedMovementX*delta, normalizedMovementY*delta);
+
+        if(timeSinceLastAttack*1000000000 >= secondPerAttack) {
             timeSinceLastAttack = 0;
             float distanceToOpponent = position.getDistanceTo((Positionable) opponent.getPosition());
             attack(distanceToOpponent);
         }
+
+    }
+
+    public void update(float delta){
+        secondSinceLastAttack += delta;
+
+        position.preUpdate();
+
+        float movementX = opponent.getPosition().getX()-position.getX(), movementY = opponent.getPosition().getY()-position.getY();
+        float norm = (float) Math.sqrt(Math.pow(movementX, 2)+Math.pow(movementY, 2));
+        float normalizedMovementX = movementX/norm*(float)move_second_speed, normalizedMovementY = movementY/norm*(float)move_second_speed;
+
+        moveBy(normalizedMovementX*delta, normalizedMovementY*delta);
+
+        if(secondSinceLastAttack >= secondPerAttack) {
+            secondSinceLastAttack = 0;
+            float distanceToOpponent = position.getDistanceTo((Positionable) opponent.getPosition());
+            attack(distanceToOpponent);
+        }
+
     }
 
     public void interpolate(float alpha){

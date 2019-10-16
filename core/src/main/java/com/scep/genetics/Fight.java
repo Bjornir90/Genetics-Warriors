@@ -20,6 +20,7 @@ public class Fight implements Callable<FightResult> {
 
         while(fighter1.health > 0 && fighter2.health > 0){
             long delta = startTime - System.nanoTime();
+            startTime = System.nanoTime();
             fighter1.update(delta);
             fighter2.update(delta);
         }

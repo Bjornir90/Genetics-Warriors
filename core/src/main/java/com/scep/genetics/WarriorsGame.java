@@ -19,6 +19,7 @@ public class WarriorsGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.scep.geneticswarriors";
 	private GameScriptingEngine scriptingEngine;
     private HashMap<String, Integer> scripts;
+    private Fighter fighter1, fighter2;
 
     private void loadScript(String name){
         String content;
@@ -52,6 +53,14 @@ public class WarriorsGame extends BasicGame {
 	@Override
     public void initialise() {
 
+        fighter1 = new Mage("sprite.png");
+        fighter2 = new Mage("sprite.png");
+        fighter2.setOpponent(fighter1);
+        fighter1.setOpponent(fighter2);
+
+        fighter1.moveBy(0.0f, 150.0f);
+        fighter2.moveBy(300.0f, 250.0f);
+
         //loadScripts();
 
 
@@ -59,14 +68,21 @@ public class WarriorsGame extends BasicGame {
     
     @Override
     public void update(float delta) {
-        scriptingEngine.update(delta);
+        //scriptingEngine.update(delta);
+        System.out.println("delta = " + delta);
+        fighter1.update(delta);
+        fighter2.update(delta);
     }
     
     @Override
     public void interpolate(float alpha) {
+        fighter1.interpolate(alpha);
+        fighter2.interpolate(alpha);
     }
     
     @Override
     public void render(Graphics g) {
+        fighter1.render(g);
+        fighter2.render(g);
     }
 }
