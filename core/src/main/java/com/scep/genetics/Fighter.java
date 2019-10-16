@@ -6,6 +6,7 @@ import org.mini2Dx.core.engine.Positionable;
 import org.mini2Dx.core.engine.geom.CollisionPoint;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.miniscript.core.GameFuture;
 
 public abstract class Fighter {
     protected double mov_speed;
@@ -49,6 +50,14 @@ public abstract class Fighter {
 
     public void render(Graphics g){
         g.drawSprite(sprite, position.getRenderX(), position.getRenderY());
+    }
+
+    public GameFuture moveByScript(float angle){
+        return new MoveFuture(this, angle);
+    }
+
+    public void moveBy(float x, float y){
+        position.add(x, y);
     }
 
     protected abstract void attack(float distanceToOpponent);
