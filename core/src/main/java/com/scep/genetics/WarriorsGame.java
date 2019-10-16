@@ -17,7 +17,6 @@ import java.util.Scanner;
 
 public class WarriorsGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.scep.geneticswarriors";
-	private Fighter fighter1, fighter2;
 	private GameScriptingEngine scriptingEngine;
     private HashMap<String, Integer> scripts;
 
@@ -53,10 +52,8 @@ public class WarriorsGame extends BasicGame {
 	@Override
     public void initialise() {
 
-        loadScripts();
+        //loadScripts();
 
-        fighter1 = new Mage("sprite.png");
-        fighter2 = new Warrior("sprite.png");
 
     }
     
@@ -67,13 +64,9 @@ public class WarriorsGame extends BasicGame {
     
     @Override
     public void interpolate(float alpha) {
-        fighter1.interpolate(alpha);
-        fighter2.interpolate(alpha);
     }
     
     @Override
     public void render(Graphics g) {
-		fighter1.render(g);
-		fighter2.render(g);
     }
 }

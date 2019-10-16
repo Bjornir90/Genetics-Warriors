@@ -12,7 +12,7 @@ public abstract class Fighter {
     protected double mov_speed;
     protected double secondPerAttack;
     protected int damage;
-    protected int health;
+    protected int health, initial_health;
     protected int armor;
     protected int crit_chance;
     protected int crit_damage;
@@ -20,11 +20,11 @@ public abstract class Fighter {
     protected Sprite sprite;
     protected CollisionPoint position;
     protected Fighter opponent;
-    protected float timeSinceLastAttack;
+    protected long timeSinceLastAttack;
 
     public Fighter(){
         position = new CollisionPoint();
-        timeSinceLastAttack = 0.0f;
+        timeSinceLastAttack = 0;
     }
 
     public Fighter(String spritePath) {
@@ -32,13 +32,13 @@ public abstract class Fighter {
         sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
     }
 
-    public void update(float delta){
+    public void update(long delta){
         timeSinceLastAttack += delta;
 
         position.preUpdate();
 
         if(timeSinceLastAttack >= secondPerAttack) {
-            timeSinceLastAttack = 0.0f;
+            timeSinceLastAttack = 0;
             float distanceToOpponent = position.getDistanceTo((Positionable) opponent.getPosition());
             attack(distanceToOpponent);
         }
