@@ -8,6 +8,8 @@ import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.miniscript.core.GameFuture;
 
+import java.util.List;
+
 public abstract class Fighter {
     protected double mov_speed;
     protected double secondPerAttack;
@@ -32,9 +34,10 @@ public abstract class Fighter {
         sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
     }
 
+    public abstract void setCarac(List<Integer> pts);
+
     public void update(long delta){
         timeSinceLastAttack += delta;
-
         position.preUpdate();
 
         if(timeSinceLastAttack >= secondPerAttack) {
