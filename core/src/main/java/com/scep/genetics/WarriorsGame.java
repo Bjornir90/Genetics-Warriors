@@ -8,26 +8,27 @@ import org.mini2Dx.core.graphics.Graphics;
 
 public class WarriorsGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.scep.geneticswarriors";
+	Mage mage;
 
-	private Texture texture;
-	
 	@Override
     public void initialise() {
-    	texture = new Texture("mini2Dx.png");
+    	mage = new Mage("sprite.png");
+
     }
     
     @Override
     public void update(float delta) {
-    
+        mage.update(delta);
     }
     
     @Override
     public void interpolate(float alpha) {
-    
+        mage.interpolate(alpha);
     }
     
     @Override
     public void render(Graphics g) {
-		g.drawTexture(texture, 0f, 0f);
+		mage.render(g);
+
     }
 }
