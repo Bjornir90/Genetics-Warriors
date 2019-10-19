@@ -1,12 +1,14 @@
 package com.scep.genetics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+
+import org.mini2Dx.core.collisions.RegionQuadTree;
+import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.game.BasicGame;
+import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.miniscript.core.GameScriptingEngine;
-import org.mini2Dx.miniscript.core.ScriptBindings;
 import org.mini2Dx.miniscript.core.exception.InsufficientCompilersException;
 import org.mini2Dx.miniscript.python.PythonGameScriptingEngine;
 
@@ -17,8 +19,12 @@ import java.util.Scanner;
 
 public class WarriorsGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.scep.geneticswarriors";
+	public static final float GAME_RENDER_X = 1920f, GAME_RENDER_Y = 1080f;
 	private GameScriptingEngine scriptingEngine;
     private HashMap<String, Integer> scripts;
+    private HashMap<Integer, Fighter> fightersByID;
+    private RegionQuadTree<CollisionBox> collisions;
+    private Viewport viewport;
 
     private void loadScript(String name){
         String content;
@@ -54,12 +60,21 @@ public class WarriorsGame extends BasicGame {
 
         //loadScripts();
 
+        viewport = new FitViewport(GAME_RENDER_X, GAME_RENDER_Y);
+
+        collisions = new RegionQuadTree<CollisionBox>(10, 0f, 0f, GAME_RENDER_X, GAME_RENDER_Y);
+
+        fightersByID = new HashMap<>();
+        Fighter f1 = new Warrior(1, "sprite.png");
+        Fighter f2 = new Warrior(2, "sprite.png");
+        fightersByID.put(1, f1);
+        fightersByID.put(2, f2);
 
     }
     
     @Override
     public void update(float delta) {
-        scriptingEngine.update(delta);
+        //scriptingEngine.update(delta);
     }
     
     @Override
@@ -68,5 +83,6 @@ public class WarriorsGame extends BasicGame {
     
     @Override
     public void render(Graphics g) {
+        viewport.apply(g);
     }
 }
