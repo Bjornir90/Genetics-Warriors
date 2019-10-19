@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import org.mini2Dx.core.engine.Positionable;
 import org.mini2Dx.core.engine.geom.CollisionBox;
-import org.mini2Dx.core.engine.geom.CollisionPoint;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.miniscript.core.GameFuture;
@@ -24,7 +23,7 @@ public abstract class Fighter {
     protected Sprite sprite;
     protected CollisionBox position;
     protected Fighter opponent;
-    protected long timeSinceLastAttack;
+    protected float timeSinceLastAttack;
     protected int id;
 
     private Fighter(int id){
@@ -41,7 +40,7 @@ public abstract class Fighter {
 
     public abstract void setCarac(List<Integer> pts);
 
-    public void update(long delta){
+    public void update(float delta){
         timeSinceLastAttack += delta;
         position.preUpdate();
 

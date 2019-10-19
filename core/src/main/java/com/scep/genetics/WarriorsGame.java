@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class WarriorsGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.scep.geneticswarriors";
@@ -75,6 +76,7 @@ public class WarriorsGame extends BasicGame {
     @Override
     public void update(float delta) {
         //scriptingEngine.update(delta);
+        fightersByID.values().forEach(fighter -> fighter.update(delta));
     }
     
     @Override
