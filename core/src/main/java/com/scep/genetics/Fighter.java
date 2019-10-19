@@ -2,7 +2,9 @@ package com.scep.genetics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import org.mini2Dx.core.engine.Positionable;
+import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.engine.geom.CollisionPoint;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
@@ -21,6 +23,7 @@ public abstract class Fighter {
     protected int dodge;
     protected Sprite sprite;
     protected CollisionPoint position;
+    protected CollisionBox collisionBox;
     protected Fighter opponent;
     protected long timeSinceLastAttack;
 
@@ -32,6 +35,8 @@ public abstract class Fighter {
     public Fighter(String spritePath) {
         this();
         sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
+        Rectangle spriteBounds = sprite.getBoundingRectangle();
+        collisionBox = new CollisionBox(spriteBounds.x, spriteBounds.y, spriteBounds.width, spriteBounds.height);
     }
 
     public abstract void setCarac(List<Integer> pts);

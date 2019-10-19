@@ -1,5 +1,7 @@
 package com.scep.genetics;
 
+import java.util.List;
+
 public class Warrior extends Fighter {
 
     public Warrior(String spritePath) {
@@ -13,6 +15,11 @@ public class Warrior extends Fighter {
         this.crit_damage = 150;
         this.dodge = 3;
         this.armor = 3;
+    }
+
+    @Override
+    public void setCarac(List<Integer> pts) {
+
     }
 
     @Override
