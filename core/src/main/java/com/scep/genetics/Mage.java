@@ -5,9 +5,9 @@ import java.util.List;
 public class Mage extends Fighter {
 
 
-    public Mage(String spritePath) {
+    public Mage(int id, String spritePath) {
 
-        super(spritePath);
+        super(id, spritePath);
         this.damage = 10;
         this.initial_health = 100;
         this.secondPerAttack = 1;

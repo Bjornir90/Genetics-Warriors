@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Thief extends Fighter {
 
-    public Thief(String spritePath) {
-        super(spritePath);
+    public Thief(int id, String spritePath) {
+        super(id, spritePath);
         this.damage = 8;
         this.initial_health = 70;
         this.secondPerAttack = 1;
