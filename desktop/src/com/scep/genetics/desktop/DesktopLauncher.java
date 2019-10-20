@@ -1,10 +1,10 @@
 package com.scep.genetics.desktop;
 
+import com.scep.genetics.WarriorsGame;
 import org.mini2Dx.desktop.DesktopMini2DxConfig;
 
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 
-import com.scep.genetics.WarriorsGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
