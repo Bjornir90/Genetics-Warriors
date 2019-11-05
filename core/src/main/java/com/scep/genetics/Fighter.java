@@ -2,11 +2,14 @@ package com.scep.genetics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import org.mini2Dx.core.engine.Positionable;
-import org.mini2Dx.core.engine.geom.CollisionPoint;
+import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.miniscript.core.GameFuture;
+
+import java.util.List;
 
 public abstract class Fighter {
     protected double mov_speed, move_second_speed;
@@ -18,26 +21,30 @@ public abstract class Fighter {
     protected int crit_damage;
     protected int dodge;
     protected Sprite sprite;
-    protected CollisionPoint position;
+    protected CollisionBox position;
     protected Fighter opponent;
     protected long timeSinceLastAttack;
     protected float secondSinceLastAttack;
+    protected int id;
 
-    public Fighter(){
-        position = new CollisionPoint();
+    private Fighter(int id){
         timeSinceLastAttack = 0;
         secondSinceLastAttack = 0.0f;
         move_second_speed = 100.0f;
+        this.id = id;
     }
 
-    public Fighter(String spritePath) {
-        this();
+    public Fighter(int id, String spritePath) {
+        this(id);
         sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
+        Rectangle spriteBounds = sprite.getBoundingRectangle();
+        position = new CollisionBox(id, spriteBounds.x, spriteBounds.y, spriteBounds.width, spriteBounds.height);
     }
 
-    public void update(long delta){
-        timeSinceLastAttack += delta;
+    public abstract void setCarac(List<Integer> pts);
 
+    public void update(float delta){
+        timeSinceLastAttack += delta;
         position.preUpdate();
 
         float movementX = opponent.getPosition().getX()-position.getX(), movementY = opponent.getPosition().getY()-position.getY();
@@ -47,25 +54,6 @@ public abstract class Fighter {
 
         if(timeSinceLastAttack*1000000000 >= secondPerAttack) {
             timeSinceLastAttack = 0;
-            float distanceToOpponent = position.getDistanceTo((Positionable) opponent.getPosition());
-            attack(distanceToOpponent);
-        }
-
-    }
-
-    public void update(float delta){
-        secondSinceLastAttack += delta;
-
-        position.preUpdate();
-
-        float movementX = opponent.getPosition().getX()-position.getX(), movementY = opponent.getPosition().getY()-position.getY();
-        float norm = (float) Math.sqrt(Math.pow(movementX, 2)+Math.pow(movementY, 2));
-        float normalizedMovementX = movementX/norm*(float)move_second_speed, normalizedMovementY = movementY/norm*(float)move_second_speed;
-
-        moveBy(normalizedMovementX*delta, normalizedMovementY*delta);
-
-        if(secondSinceLastAttack >= secondPerAttack) {
-            secondSinceLastAttack = 0;
             float distanceToOpponent = position.getDistanceTo((Positionable) opponent.getPosition());
             attack(distanceToOpponent);
         }
@@ -90,7 +78,7 @@ public abstract class Fighter {
 
     protected abstract void attack(float distanceToOpponent);
 
-    public CollisionPoint getPosition() {
+    public CollisionBox getPosition() {
         return position;
     }
 

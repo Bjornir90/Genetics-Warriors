@@ -1,12 +1,13 @@
 package com.scep.genetics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+
+import org.mini2Dx.core.collisions.RegionQuadTree;
+import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.miniscript.core.GameScriptingEngine;
-import org.mini2Dx.miniscript.core.ScriptBindings;
 import org.mini2Dx.miniscript.core.exception.InsufficientCompilersException;
 import org.mini2Dx.miniscript.python.PythonGameScriptingEngine;
 
@@ -17,9 +18,13 @@ import java.util.Scanner;
 
 public class WarriorsGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.scep.geneticswarriors";
+	public static final float GAME_RENDER_X = 1920f, GAME_RENDER_Y = 1080f;
 	private GameScriptingEngine scriptingEngine;
     private HashMap<String, Integer> scripts;
     private Fighter fighter1, fighter2;
+    private HashMap<Integer, Fighter> fightersByID;
+    private RegionQuadTree<CollisionBox> collisions;
+    private Viewport viewport;
 
     private void loadScript(String name){
         String content;
@@ -33,6 +38,7 @@ public class WarriorsGame extends BasicGame {
         try {
             id = scriptingEngine.compileScript(content);
         } catch (InsufficientCompilersException e) {
+            System.err.println("Error while loading scripts : ");
             e.printStackTrace();
             return;
         }
@@ -53,36 +59,38 @@ public class WarriorsGame extends BasicGame {
 	@Override
     public void initialise() {
 
-        fighter1 = new Mage("sprite.png");
-        fighter2 = new Mage("sprite.png");
-        fighter2.setOpponent(fighter1);
-        fighter1.setOpponent(fighter2);
-
-        fighter1.moveBy(0.0f, 150.0f);
-        fighter2.moveBy(300.0f, 250.0f);
-
         //loadScripts();
 
+        viewport = new FitViewport(GAME_RENDER_X, GAME_RENDER_Y);
+
+        collisions = new RegionQuadTree<>(10, 0f, 0f, GAME_RENDER_X, GAME_RENDER_Y);
+
+        fightersByID = new HashMap<>();
+        Fighter f1 = new Warrior(1, "sprite.png");
+        Fighter f2 = new Warrior(2, "sprite.png");
+
+        f1.setOpponent(f2);
+        f2.setOpponent(f1);
+        f2.moveBy(400f, 200f);
+        fightersByID.put(1, f1);
+        fightersByID.put(2, f2);
 
     }
     
     @Override
     public void update(float delta) {
         //scriptingEngine.update(delta);
-        System.out.println("delta = " + delta);
-        fighter1.update(delta);
-        fighter2.update(delta);
+        fightersByID.values().forEach(fighter -> fighter.update(delta));
     }
     
     @Override
     public void interpolate(float alpha) {
-        fighter1.interpolate(alpha);
-        fighter2.interpolate(alpha);
+        fightersByID.values().forEach(fighter -> fighter.interpolate(alpha));
     }
     
     @Override
     public void render(Graphics g) {
-        fighter1.render(g);
-        fighter2.render(g);
+        viewport.apply(g);
+        fightersByID.values().forEach(fighter -> fighter.render(g));
     }
 }
