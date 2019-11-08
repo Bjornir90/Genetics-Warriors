@@ -38,15 +38,31 @@ public class ADN {
 
                 int randomChange = ThreadLocalRandom.current().nextInt(-maxOvershoot, maxOvershoot);
 
-                if(total < MAX_POINTS-maxOvershoot){
+                int originalValue = genes.get(toChange);
+
+                if(total < MAX_POINTS-maxOvershoot && originalValue <= 100-maxOvershoot){
                     randomChange = maxOvershoot;
-                } else if (total > MAX_POINTS+maxOvershoot){
+                } else if (total > MAX_POINTS+maxOvershoot && originalValue >= maxOvershoot){
                     randomChange = -maxOvershoot;
                 }
 
-                genes.replace(toChange, genes.get(toChange)+randomChange);
+                genes.replace(toChange, originalValue+randomChange);
                 total += randomChange;
             }
+        }
+
+        while(total != MAX_POINTS){
+            int rankToMutate = ThreadLocalRandom.current().nextInt(0, NUMBER_CARAC+1);
+            int change = MAX_POINTS-total;
+
+            Caracteristic toChange = Caracteristic.values()[rankToMutate];
+            int originalValue = genes.get(toChange);
+
+            if(originalValue > MAX_POINTS-change || originalValue < -change)
+                continue;
+
+            genes.replace(toChange, originalValue+change);
+            total += change;
         }
         return this;
     }
