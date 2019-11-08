@@ -12,7 +12,7 @@ import org.mini2Dx.miniscript.core.GameFuture;
 import java.util.List;
 
 public abstract class Fighter {
-    protected double mov_speed, move_second_speed;
+    protected double mov_speed;
     protected double secondPerAttack;
     protected int damage;
     protected int health, initial_health;
@@ -26,11 +26,12 @@ public abstract class Fighter {
     protected long timeSinceLastAttack;
     protected float secondSinceLastAttack;
     protected int id;
+    protected float range;
 
     private Fighter(int id){
         timeSinceLastAttack = 0;
         secondSinceLastAttack = 0.0f;
-        move_second_speed = 100.0f;
+        mov_speed = 10.0;
         this.id = id;
     }
 
@@ -48,9 +49,10 @@ public abstract class Fighter {
         position.preUpdate();
 
         float movementX = opponent.getPosition().getX()-position.getX(), movementY = opponent.getPosition().getY()-position.getY();
-        float normalizedMovementX = movementX/(float)mov_speed, normalizedMovementY = movementY/(float)mov_speed;
+        float movementNorm = (float) Math.sqrt(movementX*movementX+movementY*movementY);
+        float actualMovementX = movementX*(float)mov_speed/movementNorm, actualMovementY = movementY*(float)mov_speed/movementNorm;
 
-        moveBy(normalizedMovementX*delta, normalizedMovementY*delta);
+        moveBy(actualMovementX*delta, actualMovementY*delta);
 
         if(timeSinceLastAttack*1000000000 >= secondPerAttack) {
             timeSinceLastAttack = 0;

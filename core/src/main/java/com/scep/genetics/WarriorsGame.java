@@ -71,7 +71,7 @@ public class WarriorsGame extends BasicGame {
 
         f1.setOpponent(f2);
         f2.setOpponent(f1);
-        f2.moveBy(400f, 200f);
+        f2.moveBy(500f, 500f);
         fightersByID.put(1, f1);
         fightersByID.put(2, f2);
 
