@@ -44,6 +44,7 @@ public abstract class Fighter {
 
     public abstract void setCarac(List<Integer> pts);
 
+
     public void update(float delta){
         timeSinceLastAttack += delta;
         position.preUpdate();
@@ -54,6 +55,7 @@ public abstract class Fighter {
 
         moveBy(actualMovementX*delta, actualMovementY*delta);
 
+        //Convert the nanoseconds to seconds for the comparison
         if(timeSinceLastAttack*1000000000 >= secondPerAttack) {
             timeSinceLastAttack = 0;
             float distanceToOpponent = position.getDistanceTo((Positionable) opponent.getPosition());
@@ -82,6 +84,10 @@ public abstract class Fighter {
 
     public CollisionBox getPosition() {
         return position;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setOpponent(Fighter opponent) {
