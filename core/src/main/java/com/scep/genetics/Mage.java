@@ -10,6 +10,7 @@ public class Mage extends Fighter {
     final static float MOV_SPEED_RATE = 0.05f;
     final static float CRIT_CHANC_RATE = 0.55f;
     final static float CRIT_DMG_RAGE = 3;
+    final static float DODGE_RATE = 0.57f;
 
     public Mage(int id, String spritePath) {
 
@@ -22,6 +23,8 @@ public class Mage extends Fighter {
         this.crit_chance = 5;
         this.crit_damage = 150;
         this.dodge = 3;
+        // Range (cst)
+        this.range = 300;
 
     }
 
@@ -33,11 +36,8 @@ public class Mage extends Fighter {
         this.mov_speed = this.mov_speed * MOV_SPEED_RATE * pts.get(3);
         this.crit_chance += CRIT_CHANC_RATE * pts.get(4);
         this.crit_damage += CRIT_DMG_RAGE * pts.get(5);
+        this.dodge += DODGE_RATE * pts.get(6);
     }
 
-    @Override
-    protected void attack(float distanceToOpponent) {
-
-    }
 
 }
