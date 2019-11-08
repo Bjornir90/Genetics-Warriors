@@ -78,7 +78,19 @@ public abstract class Fighter {
         position.add(x, y);
     }
 
-    protected abstract void attack(float distanceToOpponent);
+    protected int attack(float distanceToOpponent){
+        if(distanceToOpponent <= this.range){
+            boolean crit = Math.random()*100 <= this.crit_chance;
+            return opponent.takeDamage(crit?(int)(this.damage*0.001*crit_damage):this.damage);
+        }
+    }
+
+    protected int takeDamage(int damage){
+        if(Math.random()*100 <= this.dodge) return -1;
+        int eff_dmg = damage - this.armor;
+        this.health -= eff_dmg;
+        return eff_dmg;
+    }
 
     public CollisionBox getPosition() {
         return position;
