@@ -1,9 +1,11 @@
 package com.scep.genetics;
 
+import java.util.List;
+
 public class Warrior extends Fighter {
 
-    public Warrior(String spritePath) {
-        super(spritePath);
+    public Warrior(int id, String spritePath) {
+        super(id, spritePath);
         this.damage = 8;
         this.initial_health = 150;
         this.secondPerAttack = 1.2;
@@ -13,6 +15,11 @@ public class Warrior extends Fighter {
         this.crit_damage = 150;
         this.dodge = 3;
         this.armor = 3;
+    }
+
+    @Override
+    public void setCarac(List<Integer> pts) {
+
     }
 
     @Override

@@ -11,9 +11,9 @@ public class Mage extends Fighter {
     final static float CRIT_CHANC_RATE = 0.55f;
     final static float CRIT_DMG_RAGE = 3;
 
-    public Mage(String spritePath) {
+    public Mage(int id, String spritePath) {
 
-        super(spritePath);
+        super(id, spritePath);
         this.damage = 10;
         this.initial_health = 100;
         this.secondPerAttack = 1;
