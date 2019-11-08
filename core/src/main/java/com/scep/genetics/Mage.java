@@ -4,13 +4,14 @@ import java.util.List;
 
 public class Mage extends Fighter {
 
-    final static float DAMAGE_RATE = 0.4f;
+    final static float DAMAGE_RATE = 0.5f;
     final static float HEALTH_RATE = 2;
-    final static float ATQ_SPEED_RATE = 0.008f;
-    final static float MOV_SPEED_RATE = 0.05f;
+    final static float ATK_SPEED_RATE = 0.008f;
+    final static float MOV_SPEED_RATE = 0.015f;
     final static float CRIT_CHANC_RATE = 0.55f;
-    final static float CRIT_DMG_RAGE = 3;
+    final static float CRIT_DMG_RATE = 3;
     final static float DODGE_RATE = 0.57f;
+    final static float ARMOR_RATE = 0.1f;
 
     public Mage(int id, String spritePath) {
 
@@ -18,7 +19,7 @@ public class Mage extends Fighter {
         this.damage = 10;
         this.initial_health = 100;
         this.secondPerAttack = 1;
-        this.mov_speed = 0.00000001;
+        this.mov_speed = 0.000000008;
         // Percentages
         this.crit_chance = 5;
         this.crit_damage = 150;
@@ -32,11 +33,12 @@ public class Mage extends Fighter {
     public void setCarac(List<Integer> pts) throws IndexOutOfBoundsException{
         this.damage += (int) (DAMAGE_RATE * pts.get(0));
         this.initial_health += (int) (HEALTH_RATE * pts.get(1));
-        this.secondPerAttack -= ATQ_SPEED_RATE * pts.get(2);
-        this.mov_speed = this.mov_speed * MOV_SPEED_RATE * pts.get(3);
+        this.secondPerAttack -= ATK_SPEED_RATE * pts.get(2);
+        this.mov_speed += this.mov_speed * MOV_SPEED_RATE * pts.get(3);
         this.crit_chance += CRIT_CHANC_RATE * pts.get(4);
-        this.crit_damage += CRIT_DMG_RAGE * pts.get(5);
+        this.crit_damage += CRIT_DMG_RATE * pts.get(5);
         this.dodge += DODGE_RATE * pts.get(6);
+        this.armor += ARMOR_RATE * pts.get(7);
     }
 
 
