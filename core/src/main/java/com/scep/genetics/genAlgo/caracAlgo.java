@@ -73,7 +73,26 @@ public class caracAlgo {
     }
 
     private void reproduce(){
+        HashMap<Integer, ADN> idToADNnew = new HashMap<>();
+        for (int fighterNumber = 0; fighterNumber < fighters.size(); fighterNumber++) {
 
+            float maxChanceToReproduce = 0f;
+            int idToReproduce = 0;
+
+            //We only reproduce warriors with warriors, a magician adn will never be passed down to a thief or a warrior
+            for (int id = fighterNumber; id < idToScore.size(); id+=3) {
+
+                //The chance to reproduce is a random number multiplied by the score of the fighter
+                float chance = ThreadLocalRandom.current().nextFloat()*idToScore.get(id);
+                if(chance > maxChanceToReproduce){
+                    maxChanceToReproduce = chance;
+                    idToReproduce = id;
+                }
+
+            }
+            idToADNnew.put(fighterNumber, idToADN.get(idToReproduce).mutate(4));
+        }
+        idToADN = idToADNnew;
     }
 
     public void runMatches() throws Exception {
@@ -83,6 +102,7 @@ public class caracAlgo {
             computeScore(result);
         }
         computeFinalScore();
+        reproduce();
     }
 
 }
