@@ -85,6 +85,7 @@ public abstract class Fighter {
             boolean crit = Math.random()*100 <= this.crit_chance;
             return opponent.takeDamage(crit?(int)(this.damage*0.001*crit_damage):this.damage);
         }
+        return 0;
     }
 
     protected int takeDamage(int damage){
